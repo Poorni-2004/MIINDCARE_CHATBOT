@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Counselors</title>
+    <style>
+        .counselor-list {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.counselor-list:hover {
+    background-color: #eef4fc;
+}
+
+.counselor-list h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.counselor-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.counselor-list li {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.counselor-list li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.counselor-list strong {
+    display: block;
+    color: #007bff;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.counselor-list p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.counselor-list a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.counselor-list a:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .counselor-list {
+        padding: 15px;
+    }
+
+    .counselor-list li {
+        padding: 10px;
+    }
+
+    .counselor-list strong {
+        font-size: 16px;
+    }
+
+    .counselor-list p {
+        font-size: 12px;
+    }
+
+    .counselor-list a {
+        padding: 8px 12px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="counselor-list" id="counselor-list">
+    <h1>Mental Health Counselors</h1>
+    <ul>
+        {% for counselor in counselors %}
+        <li>
+            <strong>{{ counselor.name }}</strong><br>
+            Contact: {{ counselor.contact }}<br>
+            Profile: {{ counselor.profile }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="chatbot.html" onclick="goBack()">Go back to chat</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+questions,answers
+"How much time do you give yourself to de-stress before getting ready for bed?","Half an hour on a good night."
+"What do you usually do to calm down or relax?","I watch TV or read."
+"Can you suggest ways to relax?","Try reading a relaxing novel, meditating, or taking a soothing bath."
+"I feel stressed, what should I do?","Take a deep breath, try some light stretching, or talk to someone you trust."
+"How can I improve my mental health?","Focus on getting enough sleep, eating healthy, and taking time to relax."
+"How do I deal with anxiety?","Try breathing exercises or mindfulness techniques."
+"What are some ways to improve my sleep?","Set a consistent bedtime and limit screen time before bed."
+"I have trouble falling asleep.","Try meditating or reading before bed to relax your mind."
+"I feel anxious before bed.","Consider writing down your thoughts or doing a relaxing activity like reading."
+"Can watching TV help me relax?","Yes, watching light or funny shows can sometimes help you unwind."
+"thank you","Would you like to contact a counselor? (yes/no)"
+"yes","http://127.0.0.1:5000/counselors"

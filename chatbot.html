@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with the Mental Health Bot</title>
+    <style>
+     body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background: rgb(238,174,202);
+background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(249,165,247,1) 100%);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .chat-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 400px;
+            height: 400px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .chat {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user {
+            background-color: #d1ffd1;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .bot {
+            background-color: #e6f0ff;
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        form {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 400px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .mood-display {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .emoji {
+            font-size: 48px;
+            margin-left: 10px;
+        }
+        .counselor-list { display: none; }
+
+</style>
+</head>
+<body>
+    <h1>MindCare Chatbot</h1>
+
+    <div class="chat-box" id="chat-box"></div>
+
+    <form id="chat-form">
+        <label for="message">You:</label>
+        <input type="text" id="message" name="message" required>
+        <button type="submit">Send</button>
+    </form>
+
+    <div class="mood-display">
+        <p>Your Mood: </p>
+        <span id="emoji" class="emoji"></span>
+    </div>
+
+    <div class="counselor-list" id="counselor-list">
+        <h2>Mental Health Counselors</h2>
+        <ul>
+            <li><strong>Dr. John Doe</strong><br>Contact: john.doe@example.com<br>Profile: Expert in cognitive behavioral therapy.</li>
+            <li><strong>Dr. Jane Smith</strong><br>Contact: jane.smith@example.com<br>Profile: Specializes in anxiety and depression.</li>
+        </ul>
+        <a href="chatbot.html" onclick="goBack()">Go back to chat</a>
+    </div>
+
+    <script>
+        let totalSentimentScore = 0;
+        let messageCount = 0;
+
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let message = document.getElementById('message').value;
+            let chatBox = document.getElementById('chat-box');
+
+            let userChat = document.createElement('p');
+            userChat.className = 'chat user';
+            userChat.textContent = 'You: ' + message;
+            chatBox.appendChild(userChat);
+
+            document.getElementById('message').value = '';
+
+            if (message.toLowerCase().includes("thanks") || message.toLowerCase().includes("thank you")) {
+                handleEndConversation(chatBox);
+                return;
+            }
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                let botChat = document.createElement('p');
+                botChat.className = 'chat bot';
+                botChat.textContent = 'Bot: ' + data.response;
+                chatBox.appendChild(botChat);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                totalSentimentScore += data.sentiment.score;
+                messageCount++;
+                updateEmoji();
+            });
+        });
+
+        function updateEmoji() {
+            let averageSentiment = totalSentimentScore / messageCount;
+            let emojiElement = document.getElementById('emoji');
+
+            if (averageSentiment > 0) emojiElement.textContent = '😊';
+            else if (averageSentiment < 0) emojiElement.textContent = '😟';
+            else emojiElement.textContent = '😐';
+        }
+
+       
+        function handleEndConversation(chatBox) {
+    let botChat = document.createElement('p');
+    botChat.className = 'chat bot';
+    botChat.textContent = 'Bot: Would you like to contact a counselor? (yes/no)';
+    chatBox.appendChild(botChat);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Add an event listener for handling the "yes" or "no" response
+    document.getElementById('chat-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let message = document.getElementById('message').value.toLowerCase();
+
+        if (message === 'yes') {
+            // Redirect to the counselors page
+            window.location.href = 'counselors.html';
+        } else {
+            let userChat = document.createElement('p');
+            userChat.className = 'chat user';
+            userChat.textContent = 'You: ' + message;
+            chatBox.appendChild(userChat);
+        }
+        document.getElementById('message').value = '';
+    }, { once: true });
+}
+
+
+              
+            
+
+        function goBack() {
+            document.getElementById('chat-box').style.display = 'block';
+            document.getElementById('chat-form').style.display = 'block';
+            document.getElementById('mood-display').style.display = 'flex';
+            document.getElementById('counselor-list').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
